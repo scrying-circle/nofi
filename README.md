@@ -5,7 +5,7 @@ This tool offers a fast and easy-to-use rendition and evaluation of Noita's spel
 
 ## How to open
 ### Basics
-To run this tool, go to `build/linux/x64/release` and download `bundle`(you might find [this](https://download-directory.github.io/) useful). Run the executable `nofi2`:
+To run this tool, download the latest release, and run the executable `nofi2`:
 ```
 ./nofi2
 ```
