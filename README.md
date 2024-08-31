@@ -5,6 +5,7 @@ This tool offers a fast and easy-to-use rendition and evaluation of Noita's spel
 
 ## How to open
 ### Basics
+#### Note: it is good practice to build applications from source(instructions below). However, we provide a pre-built release for Linux out of convenience.
 To run this tool, download the latest release, and run the executable `nofi2`. You MUST provide the data-file path as an absolute command line argument, so that the tool can obtain the required assets. This can be done as follows:
 ```
 ./nofi2 --data-path /home/your/path/here/Nolla_Games_Noita/
@@ -16,9 +17,12 @@ The other arguments are optional.
 
 ## Configuration
 Running this excecutable with `-h` provides a list of arguments this tool accepts. The first few relate to the rendering process, and all others assist with how the spells are evaluated. All paths should be relative to the executable. The mentioned mod- and data- file paths should point to the directories containing these Noita folders.
-### Non-Linux Operation
-You're gonna have to install Linux. Just kidding, you can clone the repository and run `flutter build [your operating system here]` if it's supported, and then the binary & assets will be somewhere.
-
+### Building the Application
+Clone the repository, then run:
+```
+flutter build [linux|android|windows|chrome|idk]
+```
+The executable will be located at `build/..somethingsomething../release/bundle`. For example, on linux, the path is as follows: `build/linux/x64/release/bundle`. It is important to keep the executable in that directory, as it must access external files, but the directory itself can be moved freely.
 ## Controls
 `Ctrl+[i]` selects the `i`th autocomplete suggestion from the top. `Enter` copies the spell render to clipboard, and `Ctrl+Enter` copies the wand evaluation, formatted for Discord. `Esc` closes the program immediately.
 ## Spell Alias Dictionary
