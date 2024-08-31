@@ -17,7 +17,7 @@ The other arguments are optional.
 
 ## Configuration
 Running this excecutable with `-h` provides a list of arguments this tool accepts. The first few relate to the rendering process, and all others assist with how the spells are evaluated. All paths should be relative to the executable. The mentioned mod- and data- file paths should point to the directories containing these Noita folders.
-### Building the Application
+## Building the Application
 Clone the repository, then run:
 ```
 flutter build [linux|android|windows|chrome|idk]
