@@ -9,8 +9,11 @@ To run this tool, go to `build/linux/x64/release` and download `bundle`(you migh
 ```
 ./nofi2
 ```
-### Configuration
-Running this excecutable with `-h` provides a list of arguments this tool accepts. The first few relate to the rendering process, and all others assist with how the spells are evaluated. All paths should be relative to the executable.
+## Example Usage
+![image](https://github.com/user-attachments/assets/a5a1fa96-e035-460c-8b60-8b2a987ede08)
+
+## Configuration
+Running this excecutable with `-h` provides a list of arguments this tool accepts. The first few relate to the rendering process, and all others assist with how the spells are evaluated. All paths should be relative to the executable. The mentioned mod- and data- file paths should point to the directories containing these Noita folders.
 ### Non-Linux Operation
 You're gonna have to install Linux. Just kidding, you can clone the repository and run `flutter build [your operating system here]` if it's supported, and then the binary & assets will be somewhere.
 
