@@ -1,16 +1,13 @@
 # nofi2
 
-A new Flutter project.
+The second revision of Nofi.
 
-## Getting Started
+## Usage
+### Basics
+To run this tool, go to `build/linux/release` and download `bundle`. Run the executable `nofi2`.
+### Configuration
+Running this excecutable with `-h` provides a list of arguments this tool accepts. The first few relate to the rendering process, and all others assist with how the spells are evaluated. All paths should be relative to the executable.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Credits
+NathanSnail for the [Lua script](
+https://github.com/NathanSnail/wand_eval_tree.git) to evaluate the spells.
