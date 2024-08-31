@@ -1,0 +1,3 @@
+[submodule "assets/wand_eval_tree"]
+	path = assets/wand_eval_tree
+	url = https://github.com/NathanSnail/wand_eval_tree
