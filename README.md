@@ -10,7 +10,8 @@ To run this tool, go to `build/linux/x64/release` and download `bundle`(you migh
 ./nofi2
 ```
 ## Example Usage
-![image](https://github.com/user-attachments/assets/a5a1fa96-e035-460c-8b60-8b2a987ede08)
+![image](https://github.com/user-attachments/assets/3cec23c2-f557-4a38-9380-0a5aaeb03f82)
+
 
 ## Configuration
 Running this excecutable with `-h` provides a list of arguments this tool accepts. The first few relate to the rendering process, and all others assist with how the spells are evaluated. All paths should be relative to the executable. The mentioned mod- and data- file paths should point to the directories containing these Noita folders.
