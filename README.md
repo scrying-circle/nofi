@@ -16,7 +16,8 @@ You're gonna have to install Linux. Just kidding, you can clone the repository a
 
 ## Controls
 `Ctrl+[i]` selects the `i`th autocomplete suggestion from the top. `Enter` copies the spell render to clipboard, and `Ctrl+Enter` copies the wand evaluation, formatted for Discord. `Esc` closes the program immediately.
-
+## Spell Alias Dictionary
+This tool accepts spell ID to determine which spells to render. Since these are often unintuitive, there is a handwritten default dictionary that aliases most spells to a short and/or intuitive form. This can be edited or the path can be changed to your own text file using the `-d` command line argument. I would recommend following exactly the same format as the provided one for any custom-written ones to avoid unexpected behaviour.
 ## Troubleshooting
 If things are failing to be copied to clipboard, check that `bundle/data/flutter_assets/assets/clip` is set to be 'executable as a program'.
 # Credits
