@@ -5,10 +5,11 @@ This tool offers a fast and easy-to-use rendition and evaluation of Noita's spel
 
 ## How to open
 ### Basics
-To run this tool, download the latest release, and run the executable `nofi2`:
+To run this tool, download the latest release, and run the executable `nofi2`. You MUST provide the data-file path at least as an absolute command line argument, so that the tool can obtain the required assets. This can be done as follows:
 ```
-./nofi2
+./nofi2 --data-path /home/your/path/here/Nolla_Games_Noita/
 ```
+
 ## Example Usage
 ![image](https://github.com/user-attachments/assets/3cec23c2-f557-4a38-9380-0a5aaeb03f82)
 
