@@ -4,7 +4,7 @@ The second revision of Nofi.
 
 ## How to open
 ### Basics
-To run this tool, go to `build/linux/release` and download `bundle`. Run the executable `nofi2`:
+To run this tool, go to `build/linux/x64/release` and download `bundle`. Run the executable `nofi2`:
 ```
 ./nofi2
 ```

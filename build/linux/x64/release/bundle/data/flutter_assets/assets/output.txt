@@ -1,0 +1,41 @@
+```ansi
+[36mWand[30m
+└[36mCast #1 [0mDelay: 165f, ΔMana: 410[30m @ [0m1[30m
+ └[33mTAU[30m
+  ├[33mDIVIDE_10[30m
+  │└[33mDIVIDE_10[30m ] [0m10[30m
+  │ └[33mDIVIDE_4[30m ] [0m100[30m
+  │  └[33mADD_TRIGGER[30m ] [0m400[30m
+  │   └[34mCRITICAL_HIT[30m ] [0m800[30m
+  └[33mDIVIDE_4[30m
+   ├[34mCRITICAL_HIT[30m
+   ├[34mCRITICAL_HIT[30m
+   │└[34mCRITICAL_HIT[30m
+   │ └[34mCRITICAL_HIT[30m
+   │  └[35mMONEY_MAGIC[30m
+   │   └[33mDIVIDE_10[30m
+   │    └[33mDIVIDE_4[30m ] [0m10[30m
+   │     └[33mADD_TRIGGER[30m ] [0m40[30m
+   ├[34mCRITICAL_HIT[30m
+   │└[33mDIVIDE_4[30m
+   │ └[33mADD_TRIGGER[30m ] [0m4[30m
+   └[34mCRITICAL_HIT[30m
+    └[33mADD_TRIGGER[30m
+┌──────────────┬─────┐
+│ [34mCRITICAL_HIT [30m│ [0m806[30m │
+│ [33mADD_TRIGGER  [30m│ [0m445[30m │
+│ [33mDIVIDE_4     [30m│ [0m112[30m │
+│ [33mDIVIDE_10    [30m│ [0m12[30m  │
+│ [35mMONEY_MAGIC  [30m│ [0m1[30m   │
+│ [33mTAU          [30m│ [0m1[30m   │
+└──────────────┴─────┘
+[0mShot state 1:
+[30m┌────────────────────────┬───────┐
+│ [0mdamage_critical_chance[30m │ [0m12090[30m │
+│ [0mdamage_projectile_add[30m  │ [0m-85.2[30m │
+│ [0mfire_rate_wait[30m         │ [0m165[30m   │
+│ [0mpattern_degrees[30m        │ [0m5[30m     │
+└────────────────────────┴───────┘
+
+
+```
