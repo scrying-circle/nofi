@@ -12,7 +12,6 @@ To run this tool, download the latest release, and run the executable `nofi2`:
 ## Example Usage
 ![image](https://github.com/user-attachments/assets/3cec23c2-f557-4a38-9380-0a5aaeb03f82)
 
-
 ## Configuration
 Running this excecutable with `-h` provides a list of arguments this tool accepts. The first few relate to the rendering process, and all others assist with how the spells are evaluated. All paths should be relative to the executable. The mentioned mod- and data- file paths should point to the directories containing these Noita folders.
 ### Non-Linux Operation
