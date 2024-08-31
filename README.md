@@ -1,6 +1,7 @@
 # nofi2
 
 The second revision of Nofi.
+This tool offers a fast and easy-to-use rendition and evaluation of Noita's spells.
 
 ## How to open
 ### Basics
