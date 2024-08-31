@@ -27,3 +27,22 @@ abstract class RustApplication implements RustOpaqueInterface {
   factory RustApplication() =>
       RustLib.instance.api.crateNofiEvalRustApplicationNew();
 }
+
+enum SpellType {
+  projectile,
+  modifier,
+  staticProjectile,
+  material,
+  utility,
+  other,
+  passive,
+  multicast,
+  ;
+
+  Future<void> bgPath() => RustLib.instance.api.crateNofiEvalSpellTypeBgPath(
+        that: this,
+      );
+
+  static Future<SpellType> fromInt({required BigInt i}) =>
+      RustLib.instance.api.crateNofiEvalSpellTypeFromInt(i: i);
+}

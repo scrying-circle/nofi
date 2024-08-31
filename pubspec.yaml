@@ -66,7 +66,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
-    - assets/sprites/
     - assets/wand_eval_tree/
     - assets/wand_eval_tree/extra/
     - assets/wand_eval_tree/meta/
