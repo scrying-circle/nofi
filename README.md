@@ -10,7 +10,7 @@ To run this tool, download the latest release, and run the executable `nofi2`. Y
 ```
 ./nofi2 --data-path /home/your/path/here/Nolla_Games_Noita/
 ```
-The other arguments are optional.
+The other arguments are optional, but a mod path is necessary to have access to evaluation features.
 
 ## Example Usage
 ![image](https://github.com/user-attachments/assets/3cec23c2-f557-4a38-9380-0a5aaeb03f82)
