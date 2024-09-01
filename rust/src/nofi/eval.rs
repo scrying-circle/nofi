@@ -103,7 +103,7 @@ impl SpellType {
 }
 #[frb(opaque)]
 pub struct RustApplication {
-    graphics_index: HashMap<String, (SpellType, String)>,
+    graphics_index: HashMap<String, (SpellType, PathBuf)>,
     spell_index: HashSet<String>,
     spell_dictionary: HashMap<String, String>,
     args: Args,
@@ -111,6 +111,7 @@ pub struct RustApplication {
     image: DynamicImage,
     image_result_path: PathBuf,
     autocompleter: SearchIndex<usize>,
+    data_path: PathBuf,
 }
 fn get_absolute_path_from_relative(path: &str) -> PathBuf {
     let mut exe_path = env::current_exe().expect("Failed to get exe path");
@@ -146,7 +147,7 @@ impl RustApplication {
                 spell_id.to_string(),
                 (
                     SpellType::from_int(spell_type.parse().expect("Not a SpellType integer")),
-                    spell_path.to_string(),
+                    PathBuf::from(spell_path.trim()),
                 ),
             );
         }
@@ -161,7 +162,12 @@ impl RustApplication {
         let path = get_absolute_path_from_relative(&args.dictionary_path);
         let data = std::fs::read_to_string(path).expect("Failed to read dictionary file");
 
-        for lines in data.split("\n") {
+        let split_data = data.split("\n");
+
+        #[cfg(target_os = "windows")]
+        let split_data = data.split("\r\n");
+
+        for lines in split_data {
             let mut pair = lines.split(",");
             let key = pair
                 .next()
@@ -187,6 +193,7 @@ impl RustApplication {
             .enumerate()
             .for_each(|(num, element)| autocomplete.insert(&num, element));
         println!("Graphics index contains {} elements", graphics_index.len());
+        let data_path = PathBuf::from(&args.data_path);
 
         Self {
             graphics_index,
@@ -197,13 +204,11 @@ impl RustApplication {
             expression: String::new(),
             image_result_path: get_absolute_path_from_relative(&format!("{ASSET_PATH}/output.png")),
             autocompleter: autocomplete,
+            data_path,
         }
     }
     fn get_default(&self) -> DynamicImage {
-        match image::ImageReader::open(&format!(
-            "{}/data/ui_gfx/inventory/full_inventory_box.png",
-            &self.args.data_path
-        )) {
+        match image::ImageReader::open(self.data_path.join("data/ui_gfx/inventory/full_inventory_box.png")) {
             Ok(reader) => match reader.decode() {
                 Ok(image) => image,
                 Err(e) => {
@@ -280,23 +285,21 @@ impl RustApplication {
             let token = self.spell_dictionary.get(&word).unwrap_or(&word);
             let (spell_bg, spell_sprite) = match self.graphics_index.get(token) {
                 Some((spell_type, sprite_path)) => (
-                    image::ImageReader::open(&format!(
-                        "{}/{}",
-                        &self.args.data_path,
-                        spell_type.bg_path()
-                    ))
+                    image::ImageReader::open(self.data_path.join(spell_type.bg_path()))
                     .expect("Failed to open spell type image")
                     .decode()
                     .expect("Failed to decode spell type image"),
-                    image::ImageReader::open(&format!("{}/{}", &self.args.data_path, sprite_path))
+                    image::ImageReader::open(self.data_path.join(sprite_path))
                         .expect("Failed to open spell sprite image")
                         .decode()
                         .expect("Failed to decode spell sprite image"),
                 ),
-                None => (
+                None => {
+                    //println!("Could not find spell: {}", token);
+                (
                     image::DynamicImage::new_rgba8(20, 20),
                     image::DynamicImage::new_rgba8(20, 20),
-                ),
+                )},
             };
             image::imageops::overlay(&mut image, &self.get_default(), x as i64, y as i64);
             image::imageops::overlay(&mut image, &spell_bg, x as i64, y as i64);
@@ -341,7 +344,9 @@ impl RustApplication {
         self.args.num_of_autocomplete_options
     }
     pub fn fetch_eval_tree(&self, ansi: &str) -> String {
-
+        if self.args.mod_path.is_empty() {
+            return String::from("No mod path set, which is required for evaluation.");
+        }
         let empty_string = String::new();
         let spell_list = self
             .expression
