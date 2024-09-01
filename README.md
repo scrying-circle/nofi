@@ -25,6 +25,8 @@ flutter build [linux|android|windows|chrome|idk]
 The executable will be located at `build/..somethingsomething../release/bundle`. For example, on linux, the path is as follows: `build/linux/x64/release/bundle`. It is important to keep the executable in that directory, as it must access external files, but the directory itself can be moved freely.
 ## Controls
 `Ctrl+[i]` selects the `i`th autocomplete suggestion from the top. `Enter` copies the spell render to clipboard, and `Ctrl+Enter` copies the wand evaluation, formatted for Discord. `Esc` closes the program immediately.
+## Dependencies
+Requires `luajit` to be installed.
 ## Spell Alias Dictionary
 This tool accepts spell ID to determine which spells to render. Since these are often unintuitive, there is a handwritten default dictionary that aliases most spells to a short and/or intuitive form. This can be edited or the path can be changed to your own text file using the `-d` command line argument. I would recommend following exactly the same format as the provided one for any custom-written ones to avoid unexpected behaviour.
 ## Troubleshooting
