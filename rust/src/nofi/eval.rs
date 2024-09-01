@@ -341,9 +341,6 @@ impl RustApplication {
         self.args.num_of_autocomplete_options
     }
     pub fn fetch_eval_tree(&self, ansi: &str) -> String {
-        if self.args.mod_path.is_empty() {
-            return String::from("Mod path is required for evaluation");
-        }
 
         let empty_string = String::new();
         let spell_list = self
@@ -393,6 +390,7 @@ impl RustApplication {
             .args(spell_list.as_slice())
             .output()
             .expect("Failed to execute wand_eval_tree");
+        //println!("{}", String::from_utf8(output.stderr).unwrap());
         String::from_utf8(output.stdout)
             .unwrap_or("Something went wrong, probably data filepath".to_string())
     }
