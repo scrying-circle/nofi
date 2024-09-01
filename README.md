@@ -2,6 +2,8 @@
 
 The second revision of Nofi.
 This tool offers a fast and easy-to-use rendition and evaluation of Noita's spells.
+## IMPORTANT WINDOWS NOTE
+Currently, the clipboard mechanism does not work for windows. This will be fixed asap.
 
 ## How to open
 ### Basics
