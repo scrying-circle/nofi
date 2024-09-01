@@ -398,7 +398,7 @@ impl RustApplication {
             return;
         };
 
-        if let Err(e) =  process::Command::new("./clip")
+        if let Err(e) = process::Command::new("./clip")
             .current_dir(get_absolute_path_from_relative(ASSET_PATH))
             .arg("-t")
             .arg("output.txt")
