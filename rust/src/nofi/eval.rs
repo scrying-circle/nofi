@@ -113,7 +113,7 @@ pub struct RustApplication {
     autocompleter: SearchIndex<usize>,
 }
 fn get_absolute_path_from_relative(path: &str) -> PathBuf {
-    let mut exe_path = PathBuf::from(env::current_exe().unwrap());
+    let mut exe_path = env::current_exe().unwrap();
     exe_path.pop();
     exe_path.join(PathBuf::from(path))
 }
@@ -200,12 +200,12 @@ impl RustApplication {
                 Ok(image) => image,
                 Err(e) => {
                     println!("Failed to decode inventory background: {:?}", e);
-                    return DynamicImage::new_rgba8(1, 1);
+                    DynamicImage::new_rgba8(1, 1)
                 }
             },
             Err(e) => {
                 println!("Failed to read inventory background: {:?}", e);
-                return DynamicImage::new_rgba8(1, 1);
+                DynamicImage::new_rgba8(1, 1)
             }
         }
     }
@@ -223,7 +223,7 @@ impl RustApplication {
     pub fn copy_image(&self) {
         self.image.save(&self.image_result_path).unwrap();
 
-        let path = get_absolute_path_from_relative(&format!("{ASSET_PATH}"));
+        let path = get_absolute_path_from_relative(ASSET_PATH);
 
         match process::Command::new("./clip")
             .current_dir(path)
@@ -239,13 +239,13 @@ impl RustApplication {
     pub fn evaluate_expression(&mut self, expression: &str) -> (Vec<u8>, u32) {
         self.expression = expression.to_string();
 
-        let tokens = expression.split(' ').into_iter().collect::<Vec<&str>>();
+        let tokens = expression.split(' ').collect::<Vec<&str>>();
 
         let resize_scale = self.args.resize_scale;
 
         let scale: u32 = 20;
 
-        if tokens.len() == 0 {
+        if tokens.is_empty() {
             let mut image = self.get_default();
             if scale != 1 {
                 image = image::DynamicImage::resize(
@@ -322,7 +322,7 @@ impl RustApplication {
         let result: Vec<String> = self.autocompleter.autocomplete_with(
             &indicium::simple::AutocompleteType::Keyword,
             &(self.args.num_of_autocomplete_options as usize),
-            &query,
+            query,
         );
         (
             tokens.join(" "),
@@ -348,7 +348,7 @@ impl RustApplication {
             .filter(|x| !x.is_empty())
             .collect::<Vec<&String>>();
 
-        if spell_list.len() == 0 {
+        if spell_list.is_empty() {
             return String::from("No spells set.");
         }
 
@@ -385,29 +385,27 @@ impl RustApplication {
             .args(spell_list.as_slice())
             .output()
             .unwrap();
-        let string = String::from_utf8(output.stdout)
-            .unwrap_or("Something went wrong, probably mod/data filepaths".to_string());
-        string
+        String::from_utf8(output.stdout)
+            .unwrap_or("Something went wrong, probably mod/data filepaths".to_string())
     }
     pub fn copy_eval_tree(&self) {
         let tree = self.fetch_eval_tree("true");
 
         let path = get_absolute_path_from_relative(&format!("{ASSET_PATH}/output.txt"));
 
-        match std::fs::write(path, tree) {
-            Ok(_) => (),
-            Err(e) => println!("Failed to write to file: {:?}", e),
+        if let Err(e) = std::fs::write(path, tree) {
+            println!("Failed to write to file: {:?}", e);
+            return;
         };
 
-        match process::Command::new("./clip")
-            .current_dir(get_absolute_path_from_relative(&format!("{ASSET_PATH}")))
+        if let Err(e) =  process::Command::new("./clip")
+            .current_dir(get_absolute_path_from_relative(ASSET_PATH))
             .arg("-t")
             .arg("output.txt")
             .stdin(process::Stdio::null())
             .spawn()
         {
-            Ok(_) => (),
-            Err(e) => println!("Failed to daemonize: {:?}", e),
+            println!("Failed to daemonize: {:?}", e);
         }
     }
 }
