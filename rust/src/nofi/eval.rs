@@ -59,10 +59,10 @@ pub struct Args {
     pub number_of_casts: u32,
 
     #[arg(long, default_value = format!(""))]
-    pub mod_path: String,
+    pub data_path: String,
 
     #[arg(long, default_value = format!(""))]
-    pub data_path: String,
+    pub mod_path: String,
 }
 pub enum SpellType {
     Projectile,
@@ -113,7 +113,7 @@ pub struct RustApplication {
     autocompleter: SearchIndex<usize>,
 }
 fn get_absolute_path_from_relative(path: &str) -> PathBuf {
-    let mut exe_path = env::current_exe().unwrap();
+    let mut exe_path = env::current_exe().expect("Failed to get exe path");
     exe_path.pop();
     exe_path.join(PathBuf::from(path))
 }
@@ -121,10 +121,11 @@ impl RustApplication {
     #[frb(sync)]
     pub fn new() -> Self {
         let args = Args::parse();
+        if args.data_path.is_empty() {
+            panic!("Error: Data path not set");
+        }
 
-        let mut script_path = env::current_exe().unwrap();
-        script_path.pop();
-        script_path.push(format!("{ASSET_PATH}/get_spells.lua"));
+        let script_path = get_absolute_path_from_relative(&format!("{ASSET_PATH}/get_spells.lua"));
         let gun_actions_output = process::Command::new("luajit")
             .current_dir(&args.data_path)
             .arg(script_path)
@@ -144,7 +145,7 @@ impl RustApplication {
             graphics_index.insert(
                 spell_id.to_string(),
                 (
-                    SpellType::from_int(spell_type.parse().unwrap()),
+                    SpellType::from_int(spell_type.parse().expect("Not a SpellType integer")),
                     spell_path.to_string(),
                 ),
             );
@@ -158,12 +159,18 @@ impl RustApplication {
         let mut spell_dictionary = HashMap::new();
 
         let path = get_absolute_path_from_relative(&args.dictionary_path);
-        let data = std::fs::read_to_string(path).unwrap();
+        let data = std::fs::read_to_string(path).expect("Failed to read dictionary file");
 
         for lines in data.split("\n") {
             let mut pair = lines.split(",");
-            let key = pair.next().unwrap().to_owned();
-            let value = pair.next().unwrap().to_owned();
+            let key = pair
+                .next()
+                .expect("Could not read dictionary key")
+                .to_owned();
+            let value = pair
+                .next()
+                .expect("Coult not read dictionary value")
+                .to_owned();
             spell_dictionary.insert(key, value);
         }
         let mut autocomplete = SearchIndexBuilder::default()
@@ -179,6 +186,7 @@ impl RustApplication {
             .iter()
             .enumerate()
             .for_each(|(num, element)| autocomplete.insert(&num, element));
+        println!("Graphics index contains {} elements", graphics_index.len());
 
         Self {
             graphics_index,
@@ -277,13 +285,13 @@ impl RustApplication {
                         &self.args.data_path,
                         spell_type.bg_path()
                     ))
-                    .unwrap()
+                    .expect("Failed to open spell type image")
                     .decode()
-                    .unwrap(),
+                    .expect("Failed to decode spell type image"),
                     image::ImageReader::open(&format!("{}/{}", &self.args.data_path, sprite_path))
-                        .unwrap()
+                        .expect("Failed to open spell sprite image")
                         .decode()
-                        .unwrap(),
+                        .expect("Failed to decode spell sprite image"),
                 ),
                 None => (
                     image::DynamicImage::new_rgba8(20, 20),
@@ -333,8 +341,8 @@ impl RustApplication {
         self.args.num_of_autocomplete_options
     }
     pub fn fetch_eval_tree(&self, ansi: &str) -> String {
-        if self.args.mod_path.is_empty() || self.args.data_path.is_empty() {
-            return String::from("Error: Mod path or data path not set");
+        if self.args.mod_path.is_empty() {
+            return String::from("Mod path is required for evaluation");
         }
 
         let empty_string = String::new();
@@ -377,16 +385,16 @@ impl RustApplication {
             .arg(&format!("{}", self.args.cast_delay))
             .arg("-nc")
             .arg(&format!("{}", self.args.number_of_casts))
-            .arg("-mp")
-            .arg(&self.args.mod_path)
             .arg("-dp")
             .arg(&self.args.data_path)
+            .arg("-mp")
+            .arg(&self.args.mod_path)
             .arg("-sp")
             .args(spell_list.as_slice())
             .output()
-            .unwrap();
+            .expect("Failed to execute wand_eval_tree");
         String::from_utf8(output.stdout)
-            .unwrap_or("Something went wrong, probably mod/data filepaths".to_string())
+            .unwrap_or("Something went wrong, probably data filepath".to_string())
     }
     pub fn copy_eval_tree(&self) {
         let tree = self.fetch_eval_tree("true");
