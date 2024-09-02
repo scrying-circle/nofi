@@ -2,8 +2,6 @@
 
 The second revision of Nofi.
 This tool offers a fast and easy-to-use rendition and evaluation of Noita's spells.
-## IMPORTANT WINDOWS NOTE
-Currently, the clipboard mechanism does not work for windows. This will be fixed asap.
 
 ## How to open
 ### Basics
@@ -13,6 +11,10 @@ To run this tool, download the latest release, and run the executable `nofi2`. Y
 ./nofi2 --data-path /home/your/path/here/Nolla_Games_Noita/
 ```
 The other arguments are optional, but a mod path is necessary to have access to evaluation features.
+
+### Non-linux usage
+Windows: Fully compatible using the below build steps.
+MacOS: ?
 
 ## Example Usage
 ![image](https://github.com/user-attachments/assets/3cec23c2-f557-4a38-9380-0a5aaeb03f82)
@@ -36,3 +38,4 @@ If things are failing to be copied to clipboard, check that `bundle/data/flutter
 # Credits
 NathanSnail for the [Lua script](
 https://github.com/NathanSnail/wand_eval_tree.git) to evaluate the spells.
+Fizzy for extensive assistence with testing Windows builds.
