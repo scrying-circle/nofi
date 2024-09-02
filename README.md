@@ -26,7 +26,7 @@ Clone the repository, then run:
 ```
 flutter build [linux|android|windows|chrome|idk]
 ```
-The executable will be located at `build/..somethingsomething../release/bundle`. For example, on linux, the path is as follows: `build/linux/x64/release/bundle`. It is important to keep the executable in the `bundle` directory, as it must access external files, but the directory itself can be moved freely. There is also an executable at `bundle/data/flutter_assets/assets/clip`. Instructions to build this from source can be found [here](https://github.com/scrying-circle/fantastic-octo-enigma).
+The executable will be located at `build/..somethingsomething../release/bundle`. For example, on linux, the path is as follows: `build/linux/x64/release/bundle`. It is important to keep the executable in the `bundle` directory, as it must access external files, but the directory itself can be moved freely. There is also an executable at `bundle/data/flutter_assets/assets/clip`. Instructions to build this from source can be found [here](https://github.com/scrying-circle/fantastic-octo-enigma). (Windows) Note that this binary must be renamed to `circles_nofi_clip_tool_windows.exe` before placing it in the `assets` folder.
 ## Controls
 `Ctrl+[i]` selects the `i`th autocomplete suggestion from the top. `Enter` copies the spell render to clipboard, and `Ctrl+Enter` copies the wand evaluation, formatted for Discord. `Esc` closes the program immediately.
 ## Dependencies
