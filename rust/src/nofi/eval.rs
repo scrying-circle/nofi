@@ -238,7 +238,14 @@ impl RustApplication {
 
         let path = get_absolute_path_from_relative(ASSET_PATH);
 
-        match process::Command::new("./clip")
+        let program_name = "./circles_nofi_clip_tool";
+
+        #[cfg(target_os = "windows")]
+        let windows_path = path.join("circles_nofi_clip_tool_windows");
+        #[cfg(target_os = "windows")]
+        let program_name = windows_path.to_str().unwrap();
+
+        match process::Command::new(program_name)
             .current_dir(path)
             .arg("-i")
             .arg("output.png")
@@ -353,7 +360,7 @@ impl RustApplication {
             .split(' ')
             .map(|x| match self.spell_dictionary.get(&x.to_uppercase()) {
                 Some(y) => y,
-                None => self.spell_index.get(x).unwrap_or(&empty_string),
+                None => self.spell_index.get(&x.to_uppercase()).unwrap_or(&empty_string),
             })
             .filter(|x| !x.is_empty())
             .collect::<Vec<&String>>();
@@ -409,7 +416,14 @@ impl RustApplication {
             return;
         };
 
-        if let Err(e) = process::Command::new("./clip")
+        let program_name = "./circles_nofi_clip_tool";
+
+        #[cfg(target_os = "windows")]
+        let windows_path = get_absolute_path_from_relative(ASSET_PATH).join("circles_nofi_clip_tool_windows");
+        #[cfg(target_os = "windows")]
+        let program_name = windows_path.to_str().unwrap();
+
+        if let Err(e) = process::Command::new(program_name)
             .current_dir(get_absolute_path_from_relative(ASSET_PATH))
             .arg("-t")
             .arg("output.txt")
