@@ -31,7 +31,7 @@ pub struct Args {
     #[arg(short, long, default_value_t = 5)]
     pub num_of_autocomplete_options: u32,
 
-    #[arg(long, default_value = format!("false"))]
+    #[arg(long, default_value = format!("true"))]
     pub drained: String,
 
     #[arg(long, default_value = format!("false"))]
@@ -225,6 +225,21 @@ impl RustApplication {
             }
         }
     }
+    fn get_zero_charges_sign(&self) -> DynamicImage {
+        match image::ImageReader::open(get_absolute_path_from_relative(&format!("{ASSET_PATH}/drained.png"))) {
+            Ok(reader) => match reader.decode() {
+                Ok(image) => image,
+                Err(e) => {
+                    println!("Failed to decode drained.png: {:?}", e);
+                    DynamicImage::new_rgba8(1, 1)
+                }
+            },
+            Err(e) => {
+                println!("Failed to read drained.png: {:?}", e);
+                DynamicImage::new_rgba8(1, 1)
+            }
+        }
+    }
     fn encode_png(image: &DynamicImage) -> Vec<u8> {
         let mut output = Vec::new();
         let encoder = image::codecs::png::PngEncoder::new(&mut output);
@@ -291,7 +306,12 @@ impl RustApplication {
 
         let mut image = image::DynamicImage::new_rgba8(width, height);
         for token in tokens {
-            let word = token.to_uppercase();
+            let mut zero_charges = false;
+            let mut word = token.to_uppercase();
+            if word.chars().last().unwrap_or(' ') == '0' {
+                word.pop();
+                zero_charges = true;
+            }
             let token = self.spell_dictionary.get(&word).unwrap_or(&word);
             let (spell_bg, spell_sprite) = match self.graphics_index.get(token) {
                 Some((spell_type, sprite_path)) => (
@@ -314,6 +334,9 @@ impl RustApplication {
             image::imageops::overlay(&mut image, &self.get_default(), x as i64, y as i64);
             image::imageops::overlay(&mut image, &spell_bg, x as i64, y as i64);
             image::imageops::overlay(&mut image, &spell_sprite, x as i64 + 2, y as i64 + 2);
+            if zero_charges {
+                image::imageops::overlay(&mut image, &self.get_zero_charges_sign(), x as i64 + 2, y as i64 + 2);
+            }
             x += scale;
             if x >= image.width() {
                 x = 0;
