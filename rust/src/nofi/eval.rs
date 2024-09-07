@@ -184,10 +184,13 @@ impl RustApplication {
             .fuzzy_minimum_score(0.4)
             .dump_keyword(None)
             .build();
-        let index_keys = spell_dictionary
+        let mut index_keys = spell_dictionary
             .keys()
             .map(|x| x.clone())
             .collect::<Vec<String>>();
+        graphics_index
+            .keys()
+            .for_each(|x| index_keys.push(x.clone()));
         index_keys
             .iter()
             .enumerate()
