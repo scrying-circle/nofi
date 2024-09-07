@@ -384,6 +384,13 @@ impl RustApplication {
         let spell_list = self
             .expression
             .split(' ')
+            .map(|x| {
+                let mut word = x.to_string();
+                if word.chars().last().unwrap_or(' ') == '0' {
+                    word.pop();
+                }
+                word
+            })
             .map(|x| match self.spell_dictionary.get(&x.to_uppercase()) {
                 Some(y) => y,
                 None => self.spell_index.get(&x.to_uppercase()).unwrap_or(&empty_string),
