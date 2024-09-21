@@ -175,7 +175,7 @@ impl RustApplication {
                 .to_owned();
             let value = pair
                 .next()
-                .expect("Coult not read dictionary value")
+                .expect(&format!("Could not read key associated with {}", key.as_str()))
                 .to_owned();
             spell_dictionary.insert(key, value);
         }
