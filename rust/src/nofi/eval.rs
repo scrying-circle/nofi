@@ -112,6 +112,7 @@ pub struct RustApplication {
     image_result_path: PathBuf,
     autocompleter: SearchIndex<usize>,
     data_path: PathBuf,
+    drained_char: char,
 }
 fn get_absolute_path_from_relative(path: &str) -> PathBuf {
     let mut exe_path = env::current_exe().expect("Failed to get exe path");
@@ -207,6 +208,7 @@ impl RustApplication {
             image_result_path: get_absolute_path_from_relative(&format!("{ASSET_PATH}/output.png")),
             autocompleter: autocomplete,
             data_path,
+            drained_char: '/',
         }
     }
     fn get_default(&self) -> DynamicImage {
@@ -307,7 +309,7 @@ impl RustApplication {
         for token in tokens {
             let mut zero_charges = false;
             let mut word = token.to_uppercase();
-            if word.chars().last().unwrap_or(' ') == '0' {
+            if word.chars().last().unwrap_or(' ') == self.drained_char {
                 word.pop();
                 zero_charges = true;
             }
@@ -385,7 +387,7 @@ impl RustApplication {
             .split(' ')
             .map(|x| {
                 let mut word = x.to_string();
-                if word.chars().last().unwrap_or(' ') == '0' {
+                if word.chars().last().unwrap_or(' ') == self.drained_char {
                     word.pop();
                 }
                 word
