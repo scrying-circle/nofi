@@ -173,11 +173,10 @@ impl RustApplication {
                 .next()
                 .expect("Could not read dictionary key")
                 .to_owned();
-            let value = pair
-                .next()
-                .expect(&format!("Could not read key associated with {}", key.as_str()))
-                .to_owned();
-            spell_dictionary.insert(key, value);
+            if let Some(value) = pair.next() { 
+                spell_dictionary.insert(key, value.to_owned());
+            }
+            
         }
         let mut autocomplete = SearchIndexBuilder::default()
             .fuzzy_length(1)
