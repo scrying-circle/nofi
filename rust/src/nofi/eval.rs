@@ -460,7 +460,7 @@ impl RustApplication {
             .args(spell_list.as_slice())
             .output()
             .expect("Failed to execute wand_eval_tree");
-        //println!("{}", String::from_utf8(output.stderr).unwrap());
+        println!("{}", String::from_utf8(output.stderr).unwrap_or_default());
         String::from_utf8(output.stdout)
             .unwrap_or("Something went wrong, probably data filepath".to_string())
     }

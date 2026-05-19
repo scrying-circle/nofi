@@ -340,6 +340,11 @@ class _MyAppState extends State<MyApp> {
                     autofocus: true,
                     focusNode: focusNode,
                     controller: textcontroller,
+                    // visiblePassword disables Wine/Windows IME composition
+                    // which causes TransformLayer NaN crashes via ImeSetCompositionString
+                    keyboardType: TextInputType.visiblePassword,
+                    autocorrect: false,
+                    enableSuggestions: false,
                     onChanged: (value) {
                       _handleChanged(value);
                     },
