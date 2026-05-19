@@ -245,8 +245,8 @@ class _MyAppState extends State<MyApp> {
   }
   @override
   void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
+    textcontroller.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -385,7 +385,6 @@ class _MyAppState extends State<MyApp> {
                           color: Color.fromARGB(255, 255, 255, 255),
                           fontSize: 16,
                           fontFamily: "Courier New",
-                          height: 0,
                         ),
                       ),
                     ),
