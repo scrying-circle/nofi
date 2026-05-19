@@ -384,7 +384,7 @@ class _MyAppState extends State<MyApp> {
                         style: const TextStyle(
                           color: Color.fromARGB(255, 255, 255, 255),
                           fontSize: 16,
-                          fontFamily: "Monospace",
+                          fontFamily: "Courier New",
                           height: 0,
                         ),
                       ),
