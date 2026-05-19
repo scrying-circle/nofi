@@ -257,6 +257,30 @@ impl RustApplication {
 
         let path = get_absolute_path_from_relative(ASSET_PATH);
 
+        #[cfg(target_os = "linux")]
+        {
+            if let Ok(file) = std::fs::File::open(path.join("output.png")) {
+                if std::env::var("WAYLAND_DISPLAY").is_ok() {
+                    let _ = process::Command::new("wl-copy")
+                        .arg("-t")
+                        .arg("image/png")
+                        .stdin(file)
+                        .spawn();
+                    return;
+                } else {
+                    let _ = process::Command::new("xclip")
+                        .arg("-selection")
+                        .arg("clipboard")
+                        .arg("-t")
+                        .arg("image/png")
+                        .arg("-i")
+                        .stdin(file)
+                        .spawn();
+                    return;
+                }
+            }
+        }
+
         let program_name = "./circles_nofi_clip_tool";
 
         #[cfg(target_os = "windows")]
@@ -449,6 +473,26 @@ impl RustApplication {
             println!("Failed to write to file: {:?}", e);
             return;
         };
+
+        #[cfg(target_os = "linux")]
+        {
+            if let Ok(file) = std::fs::File::open(get_absolute_path_from_relative(ASSET_PATH).join("output.txt")) {
+                if std::env::var("WAYLAND_DISPLAY").is_ok() {
+                    let _ = process::Command::new("wl-copy")
+                        .stdin(file)
+                        .spawn();
+                    return;
+                } else {
+                    let _ = process::Command::new("xclip")
+                        .arg("-selection")
+                        .arg("clipboard")
+                        .arg("-i")
+                        .stdin(file)
+                        .spawn();
+                    return;
+                }
+            }
+        }
 
         let program_name = "./circles_nofi_clip_tool";
 
