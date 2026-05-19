@@ -191,7 +191,7 @@ class _MyAppState extends State<MyApp> {
     border: Border.all(color: const Color.fromARGB(255, 230, 184, 83), width: 3),
   );
 
-  String _inputText = "";
+  TextEditingController textcontroller = TextEditingController();
 
   double imageHeight = 0;
 
@@ -245,6 +245,7 @@ class _MyAppState extends State<MyApp> {
   }
   @override
   void dispose() {
+    textcontroller.dispose();
     focusNode.dispose();
     super.dispose();
   }
@@ -262,10 +263,9 @@ class _MyAppState extends State<MyApp> {
 
   autocompleteCommand(int key) {
     if (autocompletes.length > key) {
-      setState(() {
-        _inputText = "$base${autocompletes[key]} ";
-      });
-      _updateImage(_inputText);
+      textcontroller.text = "$base${autocompletes[key]} ";
+      textcontroller.selection = TextSelection.fromPosition(TextPosition(offset: textcontroller.text.length));
+      _updateImage(textcontroller.text);
       _updateSuggestions();
     }
   }
@@ -311,7 +311,7 @@ class _MyAppState extends State<MyApp> {
                 exit(0);
               },
               const SingleActivator(LogicalKeyboardKey.enter): () {
-                _handleSubmitted(_inputText);
+                _handleSubmitted(textcontroller.text);
               },
               const SingleActivator(LogicalKeyboardKey.enter, control: true): () {
                 rustApplication.copyEvalTree();
@@ -333,45 +333,20 @@ class _MyAppState extends State<MyApp> {
                   ],
                   ),
                 ),
-                // Custom input: bypasses Flutter TextField/IME entirely
-                // to avoid Wine DirectWrite crash in getFullHeightForCaret.
                 Container(
                   decoration: altWrapper,
                   padding: const EdgeInsets.all(4),
-                  child: Focus(
+                  child: TextField(
                     autofocus: true,
                     focusNode: focusNode,
-                    onKeyEvent: (node, event) {
-                      if (event is KeyUpEvent) return KeyEventResult.ignored;
-                      if (event.logicalKey == LogicalKeyboardKey.backspace) {
-                        if (_inputText.isNotEmpty) {
-                          setState(() {
-                            _inputText = _inputText.substring(0, _inputText.length - 1);
-                          });
-                          _handleChanged(_inputText);
-                        }
-                        return KeyEventResult.handled;
-                      }
-                      final char = event.character;
-                      if (char != null && char.isNotEmpty) {
-                        setState(() { _inputText += char; });
-                        _handleChanged(_inputText);
-                        return KeyEventResult.handled;
-                      }
-                      return KeyEventResult.ignored;
+                    controller: textcontroller,
+                    onChanged: (value) {
+                      _handleChanged(value);
                     },
-                    child: Row(
-                      children: [
-                        Text(
-                          _inputText,
-                          style: const TextStyle(
-                            color: Color.fromARGB(255, 255, 255, 255),
-                            fontSize: 16,
-                          ),
-                        ),
-                        Container(width: 2, height: 18,
-                          color: const Color.fromARGB(180, 255, 255, 255)),
-                      ],
+                    onSubmitted: _handleSubmitted,
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      fontSize: 16,
                     ),
                   ),
                 ),
