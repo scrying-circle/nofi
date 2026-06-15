@@ -10,7 +10,8 @@ To run this tool, download the latest release, and run the executable `nofi2`. Y
 ```
 ./nofi2 --data-path /home/your/path/here/Nolla_Games_Noita/
 ```
-The other arguments are optional, but a mod path is necessary to have access to evaluation features.
+This path should lead to the extracted `data.wak` files.
+The other arguments are optional, but a mod path (e.g. `--mod-path /home/your/path/here/Noita/`, which is the directory containing Noita.exe and your mod folder) is necessary to have access to evaluation features.
 
 ### Non-linux usage
 Windows: Fully compatible using the below build steps.
